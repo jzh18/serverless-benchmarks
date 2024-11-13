@@ -1,20 +1,98 @@
 {
   "experiments": {
+    "deployment": "aws",
     "update_code": false,
     "update_storage": false,
     "download_results": false,
-    "deployment": "openwhisk",
+    "architecture": "x64",
+    "container_deployment": true,
     "runtime": {
       "language": "python",
-      "version": "3.6"
+      "version": "3.10"
+    },
+    "type": "invocation-overhead",
+    "perf-cost": {
+      "benchmark": "110.dynamic-html",
+      "experiments": [
+        "warm","sequential"
+      ],
+      "input-size": "test",
+      "repetitions": 50,
+      "concurrent-invocations": 10,
+      "memory-sizes": [
+        128
+      ]
+    },
+    "network-ping-pong": {
+      "invocations": 50,
+      "repetitions": 1000,
+      "threads": 1
+    },
+    "invocation-overhead": {
+      "repetitions": 5,
+      "N": 20,
+      "type": "payload",
+      "payload_begin": 1024,
+      "payload_end": 6251000,
+      "payload_points": 20,
+      "code_begin": 1048576,
+      "code_end": 261619712,
+      "code_points": 20
+    },
+    "eviction-model": {
+      "invocations": 1,
+      "function_copy_idx": 0,
+      "repetitions": 5,
+      "sleep": 1
     }
   },
   "deployment": {
-    "name": "openwhisk",
-    "shutdownStorage": false,
-    "removeCluster": false,
-    "wskBypassSecurity": "true",
-    "wskExec": "wsk",
-    "experimentalManifest": "false"
+    "name": "aws",
+    "aws": {
+      "region": "us-east-1",
+      "lambda-role": ""
+    },
+    "azure": {
+      "region": "westeurope"
+    },
+    "gcp": {
+      "region": "europe-west1",
+      "project_name": "",
+      "credentials": ""
+    },
+    "local": {
+      "storage": {
+        "address": "",
+        "mapped_port": -1,
+        "access_key": "",
+        "secret_key": "",
+        "instance_id": "",
+        "input_buckets": [],
+        "output_buckets": [],
+        "type": "minio"
+      }
+    },
+    "openwhisk": {
+      "shutdownStorage": false,
+      "removeCluster": false,
+      "wskBypassSecurity": "true",
+      "wskExec": "wsk",
+      "experimentalManifest": false,
+      "docker_registry": {
+        "registry": "",
+        "username": "",
+        "password": ""
+      },
+      "storage": {
+        "address": "172.17.0.7:9000",
+        "mapped_port": 9011,
+        "access_key": "FpeWvaYC2nqctiFev8_a0QMSz4t3ncLWJKFwtPxsKzc",
+        "secret_key": "df9125d68175c14255530a7afc0d44bf2b3ebbbd9e45c4d7aa395bbdc77b0f8f",
+        "instance_id": "e4d6996fcc826c44a01ac653792bc3d10a64427fd5e0650170c0c3aef6407be8",
+        "output_buckets": [],
+        "input_buckets": [],
+        "type": "minio"
+      }
+    }
   }
 }

@@ -204,6 +204,9 @@ class OpenWhisk(System):
                             str(code_package.benchmark_config.timeout * 1000),
                             *self.storage_arguments(),
                             code_package.code_location,
+                            "--insecure",
+
+
                         ],
                         stderr=subprocess.PIPE,
                         stdout=subprocess.PIPE,
@@ -262,6 +265,7 @@ class OpenWhisk(System):
                     str(code_package.benchmark_config.timeout * 1000),
                     *self.storage_arguments(),
                     code_package.code_location,
+                    "--insecure",
                 ],
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
