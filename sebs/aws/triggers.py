@@ -107,7 +107,7 @@ class HTTPTrigger(Trigger):
         return Trigger.TriggerType.HTTP
 
     def sync_invoke(self, payload: dict) -> ExecutionResult:
-
+        print("==================================http invoke")
         self.logging.debug(f"Invoke function {self.url}")
         return self._http_invoke(payload, self.url)
 

@@ -1,6 +1,6 @@
 {
   "general": {
-    "docker_repository": "spcleth/serverless-benchmarks"
+    "docker_repository": "601375068473.dkr.ecr.us-east-1.amazonaws.com/sebs-benchmarks-d0042ca8"
   },
   "local": {
     "experiments": {

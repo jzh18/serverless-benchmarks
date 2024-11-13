@@ -188,6 +188,7 @@ class Trigger(ABC, LoggingBase):
             raise Exception("Unknown trigger type {}".format(member))
 
     def _http_invoke(self, payload: dict, url: str, verify_ssl: bool = True) -> ExecutionResult:
+        print(f"payload============================: {payload}")
         import pycurl
         from io import BytesIO
 

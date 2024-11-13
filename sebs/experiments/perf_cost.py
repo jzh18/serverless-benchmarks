@@ -71,7 +71,8 @@ class PerfCost(Experiment):
     def run(self):
 
         settings = self.config.experiment_settings(self.name())
-
+        print("====================")
+        print(settings)
         # Execution on systems where memory configuration is not provided
         memory_sizes = settings["memory-sizes"]
         if len(memory_sizes) == 0:
@@ -80,7 +81,7 @@ class PerfCost(Experiment):
         for memory in memory_sizes:
             self.logging.info(f"Begin experiment on memory size {memory}")
             self._function.config.memory = memory
-            self._deployment_client.update_function(self._function, self._benchmark)
+            self._deployment_client.update_function(self._function, self._benchmark, self._benchmark.container_deployment, self._benchmark.container_uri+"-bafs")
             self._sebs_client.cache_client.update_function(self._function)
             self.run_configuration(settings, settings["repetitions"], suffix=str(memory))
 
