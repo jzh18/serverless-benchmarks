@@ -54,12 +54,15 @@ class PerfCost(Experiment):
         )
 
         # add HTTP trigger
-        triggers = self._function.triggers(Trigger.TriggerType.HTTP)
+        print("triggers====================http")
+        triggers = self._function.triggers(Trigger.TriggerType.LIBRARY)
         if len(triggers) == 0:
+            print("create trigger======================")
             self._trigger = deployment_client.create_trigger(
                 self._function, Trigger.TriggerType.HTTP
             )
         else:
+            print("list trigger======================")
             self._trigger = triggers[0]
 
         self._out_dir = os.path.join(sebs_client.output_dir, "perf-cost")
@@ -69,16 +72,17 @@ class PerfCost(Experiment):
         self._sebs_client = sebs_client
 
     def run(self):
-
         settings = self.config.experiment_settings(self.name())
         print("====================")
         print(settings)
         # Execution on systems where memory configuration is not provided
         memory_sizes = settings["memory-sizes"]
         if len(memory_sizes) == 0:
+            print("runnnning on systems===============================")
             self.logging.info("Begin experiment")
             self.run_configuration(settings, settings["repetitions"])
         for memory in memory_sizes:
+            print("run on memory===============================")
             self.logging.info(f"Begin experiment on memory size {memory}")
             self._function.config.memory = memory
             self._deployment_client.update_function(self._function, self._benchmark, self._benchmark.container_deployment, self._benchmark.container_uri+"-bafs")

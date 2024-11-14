@@ -204,8 +204,7 @@ class OpenWhisk(System):
                             str(code_package.benchmark_config.timeout * 1000),
                             *self.storage_arguments(),
                             code_package.code_location,
-                            "--apihost",
-                            "localhost",
+                            "--insecure",
 
 
                         ],
@@ -266,6 +265,7 @@ class OpenWhisk(System):
                     str(code_package.benchmark_config.timeout * 1000),
                     *self.storage_arguments(),
                     code_package.code_location,
+                    "--insecure",
                 ],
                 stderr=subprocess.PIPE,
                 stdout=subprocess.PIPE,
@@ -345,6 +345,7 @@ class OpenWhisk(System):
         pass
 
     def create_trigger(self, function: Function, trigger_type: Trigger.TriggerType) -> Trigger:
+        print(f'create trigger===================================')
         if trigger_type == Trigger.TriggerType.LIBRARY:
             return function.triggers(Trigger.TriggerType.LIBRARY)[0]
         elif trigger_type == Trigger.TriggerType.HTTP:
@@ -355,6 +356,7 @@ class OpenWhisk(System):
                     stderr=subprocess.DEVNULL,
                     check=True,
                 )
+                print(f'function name======================================================: {function.name}')
             except FileNotFoundError as e:
                 self.logging.error(
                     "Could not retrieve OpenWhisk configuration - is path to wsk correct?"
