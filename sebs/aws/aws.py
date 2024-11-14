@@ -562,6 +562,7 @@ class AWS(System):
         from sebs.aws.triggers import HTTPTrigger
 
         function = cast(LambdaFunction, func)
+        
         if trigger_type == Trigger.TriggerType.HTTP:
 
             api_name = "{}-http-api".format(function.name)
