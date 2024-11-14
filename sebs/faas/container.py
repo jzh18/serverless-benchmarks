@@ -64,7 +64,6 @@ class DockerContainer(LoggingBase):
         else:
             line = txt
 
-        print(f'================================: {line}')
         status = line.get("status", "")
         progress_detail = line.get("progressDetail", {})
         id_ = line.get("id", "")

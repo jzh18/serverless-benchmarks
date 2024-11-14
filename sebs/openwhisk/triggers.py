@@ -84,9 +84,7 @@ class HTTPTrigger(Trigger):
     def __init__(self, fname: str, url: str):
         super().__init__()
         self.fname = fname
-        self.url = "http://172.17.0.1:3233/api/v1/web/guest/default/110.dynamic-html-python-3.10"
-        print("Init  Http trigger========")
-        # raise NotImplementedError("HTTP trigger not implemented")
+        self.url = url
 
     @staticmethod
     def typename() -> str:
@@ -98,9 +96,6 @@ class HTTPTrigger(Trigger):
 
     def sync_invoke(self, payload: dict) -> ExecutionResult:
         self.logging.debug(f"Invoke function {self.url}")
-        print("Http sync invoke========")
-        print(payload)
-        print(self.url) # https://172.18.0.2:31001/api/v1/web/guest/default/110.dynamic-html-python-3.10.json
         return self._http_invoke(payload, self.url, False)
 
     def async_invoke(self, payload: dict) -> concurrent.futures.Future:
