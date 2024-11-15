@@ -15,7 +15,7 @@ from sebs.utils import LoggingHandlers
 from .config import OpenWhiskConfig
 from .function import OpenWhiskFunction, OpenWhiskFunctionConfig
 from ..config import SeBSConfig
-
+import time
 
 class OpenWhisk(System):
     _config: OpenWhiskConfig
@@ -31,6 +31,8 @@ class OpenWhisk(System):
         super().__init__(system_config, cache_client, docker_client)
         self._config = config
         self.logging_handlers = logger_handlers
+
+        self.img_suffix="" if os.getenv("IMG_SUFFIX") is None else os.getenv("IMG_SUFFIX")
 
         self.container_client = OpenWhiskContainer(
             self.system_config, self.config, self.docker_client, self.config.experimentalManifest
@@ -197,7 +199,7 @@ class OpenWhisk(System):
                             "--web",
                             "true",
                             "--docker",
-                            docker_image,
+                            docker_image + self.img_suffix,
                             "--memory",
                             str(code_package.benchmark_config.memory),
                             "--timeout",
@@ -258,7 +260,7 @@ class OpenWhisk(System):
                     "--web",
                     "true",
                     "--docker",
-                    docker_image,
+                    docker_image + self.img_suffix,
                     "--memory",
                     str(code_package.benchmark_config.memory),
                     "--timeout",
@@ -332,7 +334,11 @@ class OpenWhisk(System):
         )
 
     def enforce_cold_start(self, functions: List[Function], code_package: Benchmark):
-        raise NotImplementedError()
+        self.container_client.remove_containers_by_image(code_package.container_uri+self.img_suffix)
+        self.container_client.remove_image(code_package.container_uri+self.img_suffix)
+        time.sleep(5)
+        
+        
 
     def download_metrics(
         self,

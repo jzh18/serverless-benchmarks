@@ -14,10 +14,10 @@
     "perf-cost": {
       "benchmark": "110.dynamic-html",
       "experiments": [
-        "warm","sequential"
+        "cold"
       ],
       "input-size": "test",
-      "repetitions": 50,
+      "repetitions": 20,
       "concurrent-invocations": 10,
       "memory-sizes": [
         128
@@ -84,11 +84,11 @@
         "password": ""
       },
       "storage": {
-        "address": "172.17.0.7:9000",
+        "address": "172.17.0.4:9000",
         "mapped_port": 9011,
-        "access_key": "FpeWvaYC2nqctiFev8_a0QMSz4t3ncLWJKFwtPxsKzc",
-        "secret_key": "df9125d68175c14255530a7afc0d44bf2b3ebbbd9e45c4d7aa395bbdc77b0f8f",
-        "instance_id": "e4d6996fcc826c44a01ac653792bc3d10a64427fd5e0650170c0c3aef6407be8",
+        "access_key": "Cm3kT2hYpJmEP6TeT-z69FjX74Ja1T7Q5kRf9GkqG-s",
+        "secret_key": "91e39fe5208034112fe77e33079236569182192d489641132cd36b6ac5d53df9",
+        "instance_id": "6d2a0f8e35e16aaf5d5dea9392bc79e27b3db2e97ce5d355c2fce5af4c06ef5d",
         "output_buckets": [],
         "input_buckets": [],
         "type": "minio"

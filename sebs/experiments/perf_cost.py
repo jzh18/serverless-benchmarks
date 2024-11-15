@@ -202,6 +202,10 @@ class PerfCost(Experiment):
                         incorrect_count += len(incorrect)
 
                     time.sleep(5)
+                    if run_type == PerfCost.RunType.COLD or run_type == PerfCost.RunType.BURST:
+                        self._deployment_client.enforce_cold_start(
+                            [self._function], self._benchmark
+                        )
 
                 result.end()
                 self.compute_statistics(client_times)

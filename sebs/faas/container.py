@@ -56,6 +56,25 @@ class DockerContainer(LoggingBase):
                 return True
             except docker.errors.NotFound:
                 return False
+            
+    def remove_image(self, image_uri):
+        try:
+            print(f"Removing image {image_uri}")
+            self.docker_client.images.remove(image=f"{image_uri}")
+        except docker.errors.ImageNotFound as e:
+            self.logging.error(f"Image {image_uri} not found. {e}")
+        except docker.errors.APIError as e:
+            self.logging.error(f"Failed to remove image {image_uri}. Error: {str(e)}")
+            raise e
+        
+    def remove_containers_by_image(self, image_uri):
+        for container in self.docker_client.containers.list(all=True):
+            if container.status!="running" and len(container.image.tags)==0:
+                container.remove(force=True)
+                continue
+            if container.image.tags[0] == image_uri:
+                container.stop()
+                container.remove(force=True)
 
     def show_progress(self, txt: str, progress: Progress, layer_tasks: dict):
 
