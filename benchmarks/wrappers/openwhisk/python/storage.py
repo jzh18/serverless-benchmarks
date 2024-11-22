@@ -50,6 +50,9 @@ class storage:
 
     def upload(self, bucket, file, filepath):
         key_name = storage.unique_name(file)
+        all_buckets = self.client.list_buckets()
+        if bucket not in all_buckets:
+            self.client.make_bucket(bucket)
         self.client.fput_object(bucket, key_name, filepath)
         return key_name
 
