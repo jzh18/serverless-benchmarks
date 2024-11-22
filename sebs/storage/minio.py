@@ -174,6 +174,8 @@ class Minio(PersistentStorage):
         try:
             key = os.path.join(self.input_prefixes[path_idx], file)
             bucket_name = self.get_bucket(Resources.StorageBucketType.BENCHMARKS)
+            if bucket_name not in self.list_buckets():
+                self._create_bucket(bucket_name)
             self.connection.fput_object(bucket_name, key, filepath)
         except minio.error.ResponseError as err:
             self.logging.error("Upload failed!")
