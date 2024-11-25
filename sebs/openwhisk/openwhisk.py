@@ -335,7 +335,11 @@ class OpenWhisk(System):
 
     def enforce_cold_start(self, functions: List[Function], code_package: Benchmark):
         self.container_client.remove_containers_by_image(code_package.container_uri+self.img_suffix)
+        self.container_client.remove_containers_by_image(code_package.container_uri+"-bafs")
+        self.container_client.remove_containers_by_image("openwhisk/action-python-v3.10:latest")
         self.container_client.remove_image(code_package.container_uri+self.img_suffix)
+        self.container_client.remove_image(code_package.container_uri+"-bafs")
+        self.container_client.remove_image("openwhisk/action-python-v3.10:latest")
         time.sleep(5)
         
         

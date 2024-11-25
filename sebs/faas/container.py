@@ -6,6 +6,7 @@ import os
 import shutil
 from typing import Tuple
 
+import docker.errors
 from rich.progress import Progress
 
 from sebs.config import SeBSConfig
@@ -68,13 +69,16 @@ class DockerContainer(LoggingBase):
             raise e
         
     def remove_containers_by_image(self, image_uri):
-        for container in self.docker_client.containers.list(all=True):
-            if container.status!="running" and len(container.image.tags)==0:
-                container.remove(force=True)
-                continue
-            if container.image.tags[0] == image_uri:
-                container.stop()
-                container.remove(force=True)
+            for container in self.docker_client.containers.list(all=True):
+                try:
+                    if container.status!="running" and len(container.image.tags)==0:
+                        container.remove(force=True)
+                        continue
+                    if container.image.tags[0] == image_uri:
+                        container.stop()
+                        container.remove(force=True)
+                except docker.errors.NotFound as e:
+                    self.logging.warning(f"Image {image_uri} not found. {e}")
 
     def show_progress(self, txt: str, progress: Progress, layer_tasks: dict):
 
