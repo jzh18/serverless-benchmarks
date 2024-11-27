@@ -69,12 +69,15 @@ class DockerContainer(LoggingBase):
         
     def remove_containers_by_image(self, image_uri):
         for container in self.docker_client.containers.list(all=True):
-            if container.status!="running" and len(container.image.tags)==0:
-                container.remove(force=True)
-                continue
-            if container.image.tags[0] == image_uri:
-                container.stop()
-                container.remove(force=True)
+            try:
+                if container.status!="running" and len(container.image.tags)==0:
+                    container.remove(force=True)
+                    continue
+                if container.image.tags[0] == image_uri:
+                    container.stop()
+                    container.remove(force=True)
+            except docker.errors.NotFound as e:
+                self.logging.warning(f"Container {container.id} not found. {e}")
 
     def show_progress(self, txt: str, progress: Progress, layer_tasks: dict):
 
