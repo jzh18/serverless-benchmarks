@@ -109,6 +109,8 @@ class HTTPTrigger(Trigger):
     def sync_invoke(self, payload: dict) -> ExecutionResult:
         
         self.logging.debug(f"Invoke function {self.url}")
+        print("payload=============================")
+        print(payload)
         return self._http_invoke(payload, self.url)
 
     def async_invoke(self, payload: dict) -> concurrent.futures.Future:
