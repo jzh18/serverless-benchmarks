@@ -286,6 +286,7 @@ class PerfCost(Experiment):
                     "client_time",
                     "provider_time",
                     "mem_used",
+                    "billed_time"
                 ]
             )
             for f in glob.glob(os.path.join(directory, "perf-cost", "*.json")):
