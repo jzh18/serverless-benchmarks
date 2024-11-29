@@ -62,6 +62,7 @@ class AWS(System):
         self.logging_handlers = logger_handlers
         self._config = config
         self.storage: Optional[S3] = None
+        self.img_suffix="" if os.getenv("IMG_SUFFIX") is None else os.getenv("IMG_SUFFIX")
 
     def initialize(self, config: Dict[str, str] = {}, resource_prefix: Optional[str] = None):
         # thread-safe
@@ -199,7 +200,7 @@ class AWS(System):
         container_deployment: bool,
         container_uri: str,
     ) -> "LambdaFunction":
-
+        container_uri = container_uri + self.img_suffix 
         package = code_package.code_location
         benchmark = code_package.benchmark
         language = code_package.language_name
@@ -329,6 +330,7 @@ class AWS(System):
     ):
         name = function.name
         function = cast(LambdaFunction, function)
+        container_uri = container_uri + self.img_suffix
 
         if container_deployment:
             self.client.update_function_code(FunctionName=name, ImageUri=container_uri)

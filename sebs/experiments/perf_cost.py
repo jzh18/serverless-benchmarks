@@ -54,7 +54,10 @@ class PerfCost(Experiment):
         )
 
         # add HTTP trigger
-        triggers = self._function.triggers(Trigger.TriggerType.LIBRARY)
+        if deployment_client.name =="openwhisk":
+            triggers = self._function.triggers(Trigger.TriggerType.LIBRARY)
+        else:
+            triggers = self._function.triggers(Trigger.TriggerType.HTTP)
         if len(triggers) == 0:
             self._trigger = deployment_client.create_trigger(
                 self._function, Trigger.TriggerType.HTTP
@@ -368,5 +371,6 @@ class PerfCost(Experiment):
                                 invoc.times.client,
                                 invoc.provider_times.execution,
                                 invoc.stats.memory_used,
+                                invoc.billing.billed_time
                             ]
                         )
